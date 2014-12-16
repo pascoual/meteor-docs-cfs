@@ -1,0 +1,389 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Meteor CFS : Collection File System for Meteor</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=792, user-scalable=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen.css">
+</head>
+<body class="list">
+	<header class="caption">
+		<h1 style="color: white">CFS and Forms</h1>
+		<p style="color: white">Pascal Richier & Morea.fr</p>
+	</header>
+	<section class="slide cover" id="Cover"><div>
+		<h2 style="margin-top: -40px">Meteor CFS</h2>
+		<h2>Gestion des fichiers</h2>
+		<p><strong>Présenté par Pascal Richier & <a href="http://www.morea.fr" style="border-bottom: none;">www.morea.fr</a></strong></p>
+		<img src="pictures/slide16.jpg" alt="">
+		<!--
+			To apply styles to the certain slides
+			set slide ID to get needed elements
+			-->
+		<style>
+			#Cover h2 {
+				margin:30px 0 0;
+				color:#FFF;
+				text-align:center;
+				font-size:70px;
+				}
+			#Cover p {
+				margin:128px 0 0;
+				text-align:center;
+				color:#000;
+				font-style:italic;
+                font-weight: bold;
+				font-size:35px;
+				}
+            #Cover p a {
+				color:#D70;
+			}
+            #Cover p strong {
+                color:#D70;
+            }
+		</style>
+	</div></section>
+	<section class="slide" id="menu"><div>
+        <img src="pictures/morea.jpg" class="imgmorea">
+        <p class="imgmorea">Conception et infogérance d’infrastructures critiques</p>
+		<h2 style="margin-top:-40px">CFS : le couteau suisse des fichiers</h2>
+		<ol>
+			<li>Vos fichiers, des données importantes et difficiles à gérer</li>
+            <li class="next">AWS - S3</li>
+            <li class="next">Installation</li>
+            <li class="next">Des collections un peu particulières</li>
+            <li class="next">L'insertion</li>
+            <li class="next">L'insertion avec cfs:AutoForm</li>
+            <li class="next">L'affichage: publish/subscribe</li>
+            <li class="next">La sécurité</li>
+            <!--li class="next">And... Action</li>
+            <li class="next">Factoriser</li>
+            <li class="next">Côté serveur</li-->
+		</ol>
+	</div>
+    <style>
+        #menu ol li {
+            line-height: 40px;
+        }
+    </style>
+    </section>
+    
+	<section class="slide" id="history"><div>
+        <img src="pictures/morea.jpg" class="imgmorea">
+        <p class="imgmorea">Conception et infogérance d’infrastructures critiques</p>
+		<h2 style="margin-top: -50px; margin-left: 25px">Des données difficiles à gérer</h2>
+        <div class="imagewithlegend next">
+            <img src="pictures/aws-autoscale.png" title="Meteor-Router" style="max-height: 220px; position: absolute; bottom: 50px; left: 50px; max-height: 330px;">
+            <div class="imagelegend" style="position: absolute; top: 200px; left: 20px"><h2></h2><p class="sticker">Avec de l'auto-scaling</p></div>
+            <p style="position: absolute; bottom: -15px; left: 80px; padding: 10px; color: #444; font-weight: bold;"></p>
+        </div>
+        <div class="imagewithlegend">
+            <img src="pictures/chmod4.png" title="Mini-Pages" style="position: absolute; bottom: 230px; right: 10px; max-height: 330px;">
+            <div class="imagelegend" style="position: absolute; top: 90px; right: 350px"><h2></h2><p class="sticker">Gestions des users, process, droits</p></div>
+        </div>
+		<style>
+            .imagewithlegend img {
+                z-index:0;
+                position: relative;
+                border:1px solid #;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+                border-radius: 20px;  
+            }
+            .imagelegend {
+                position: relative;
+                z-index: 20;
+            }
+                
+            .sticker {
+                color: #FFF;
+                text-align:center;
+                font-weight: bold;
+                -moz-transform:rotate(-10deg);
+                -webkit-transform:rotate(-5deg); 
+                -o-transform:rotate(-10deg);
+                -ms-transform : rotate(-10deg);
+                padding: 0px 5px;
+                background-color: #333;
+                border:1px solid #;
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
+                border-radius: 10px; 
+            }
+            .imagelegend h2 {
+                color: #60DB00;
+            }
+			#mongodb pre, #mongodb pre code {
+				font-size: 18px;
+                line-height: 39px;
+                max
+				}
+            #mongodb h2 {
+                margin-bottom: 20px;
+            }
+        </style>
+	</div></section>
+    
+    	<section class="slide"><div>
+		<h2 style="position: relative; top: -60px"></h2>
+        <img src="pictures/amazon_aws-s3.png" style="position: relative; left:170px;top:-120px; width:400px;">
+		<ol  style="position:absolute;top:150px;left:80px;">
+			<li>Durabilité de 99,999999999 % des objets.</li>
+            <li>Faible coût : stockage, demandes &amp; transferts</li>
+            <li>Évolutif : vous ne payez que ce que vous consommez</li>
+            <li>Sécurisé</li>
+            <li>Performant</li>
+            <li>Simple d'utilisation</li>
+            <img src="pictures/s3-price.png" style="position: relative; left:220px;top:-70px; width:600px;">
+            <img src="pictures/s3-requests.png" style="position: relative; left:580px;top:-575px; width:340px;">
+		</ol>
+	</div></section>
+    
+    <section class="slide"><div>
+            <img class="" src="pictures/aws-transferts.png" style="position: relative; left:30px;top:-80px; width:600px;">
+	</div></section>
+    
+	<section class="slide" id="installation"><div>
+        <img src="pictures/morea.jpg" class="imgmorea">
+        <p class="imgmorea">Conception et infogérance d’infrastructures critiques</p>
+		<h2 style="margin-top: -50px">Installation</h2>
+        <pre style="margin-bottom: 45px">
+            <code>$ cd ./monProjet/
+$ meteor add <mark class="important">cfs:standard-packages</mark>
+$ meteor add <mark class="important">cfs:filesystem</mark> (ou cfs:gridfs)
+$ meteor add <mark class="important">cfs:s3</mark>
+$ meteor add <mark class="important">cfs:autoform</mark></code>
+        </pre>
+        <h2 style="margin-bottom: 10px">NOTE: This branch is under active development right now (2014-12-06).</h2>
+		<style>
+            #installation .slide p {
+                margin-bottom: 0px !important;
+            }
+			#installation pre, #installation pre code {
+				font-size: 18px;
+                line-height: 28px;
+            }
+        </style>
+	</div></section>
+    
+	<section class="slide" id="route"><div>
+        <img src="pictures/morea.jpg" class="imgmorea">
+        <p class="imgmorea">Client (client/collections_client/avatars.js)</p>
+		<h2 style="position: absolute; top: 10px">Déclarer une FS.Collection</h2>
+        <p style="margin-top: -20px; margin-bottom: 25px">common.js</p>
+        <pre style="position: absolute; top: 170px; left: 120px;">
+            <code>var imageStore = new FS.Store.S3("images", {
+  region: "my-s3-region", //optional in most cases
+  <mark class="important">accessKeyId: "account or IAM key"</mark>, // or environment variables
+  <mark class="important">secretAccessKey: "account or IAM secret"</mark>, // or environment variables
+  <mark class="important">bucket: "mybucket"</mark>, //required
+  ACL: myValue //optional, default is 'private'
+  // The rest are generic store options supported by all storage adapters
+  transformWrite: myTransformWriteFunction, //optional
+  transformRead: myTransformReadFunction, //optional
+  maxTries: 1 //optional, default 5
+});
+
+Images = new FS.Collection("images", {
+  stores: [imageStore]
+});</code>
+        </pre>
+        <p class="sticker" style="position: absolute; top: 450px; left: 570px">Sécurisez vos clés<br>METEOR_SETTINGS ou variable d&#39;env.</p>
+		<style>
+			#route pre {
+                margin-top: -15px;
+            }
+			#route pre, #route pre code {
+				font-size: 18px;
+                line-height: 30px;
+				}
+        </style>
+	</div></section>
+    
+	<section class="slide" id="departementale"><div>
+        <img src="pictures/morea.jpg" class="imgmorea">
+        <p class="imgmorea">Conception et infogérance d’infrastructures critiques</p>
+		<h2>L&#39;insertion via un input de formulaire</h2>
+        <!--p style="margin-top: -20px; margin-bottom: 25px">Meilleur pour les amotisseurs</p-->
+        <pre style="position: absolute; top: 230px; left: 40px;font-size: 24px; line-height: 35px;">
+            <code>Template.myForm.events({
+  'change .myFileInput': function(event, template) {
+    FS.Utility.eachFile(event, function(file) {
+      <mark class="important">Images.insert</mark>(<mark class="important">file</mark>, function (err, fileObj) {
+        //Inserted new doc with ID fileObj._id, and kicked off the data upload using HTTP
+      });
+    });
+  }
+});</code>
+        </pre>
+		<style>
+			#departementale pre, #departementale pre code {
+				font-size: 18px;
+                line-height: 33px;
+				}
+        </style>
+	</div></section>
+    
+	<section class="slide" id="parametres"><div>
+        <img src="pictures/morea.jpg" class="imgmorea">
+        <p class="imgmorea">Conception et infogérance d’infrastructures critiques</p>
+		<h2>Ajoutons AutoForm:</h2>
+        <img src="pictures/autoform.png" style="position: relative; left:300px;top:100px; width:600px;">
+        <pre style="position: absolute; top: 220px; left: 100px;font-size: 24px; line-height: 35px;">
+            <code>Docs = new Meteor.Collection("docs");
+Docs.attachSchema(new SimpleSchema({
+  name: {
+    type: String
+  },
+  logo: {
+    type: <mark class="important">String</mark>,
+    autoform: {
+      afFieldInput: {
+        <mark class="important">type: "cfs-file"</mark>,
+        <mark class="important">collection: "files"</mark>
+      }
+    }
+  }
+}));</code>
+        </pre>
+        <p class="sticker next" style="position: absolute; top: 300px; left: 570px">Insert :&emsp;&emsp;&emsp; ok<br>update: &emsp;bientôt<br>quickForm: &emsp;&emsp;ok</p>
+		<style>
+			#parametres pre, #parametres pre code {
+				font-size: 18px;
+                line-height: 26px;
+				}
+        </style>
+	</div></section>
+    
+	<section class="slide" id="parametresGlobbing"><div>
+        <img src="pictures/morea.jpg" class="imgmorea">
+        <p class="imgmorea">Conception et infogérance d’infrastructures critiques</p>
+		<h2>Afficher vos images</h2>
+        <pre style="position: absolute; top: 200px; left: 50px;font-size: 24px; line-height: 35px;">
+            <code>Template.imageView.helpers({
+  images: function () {
+    return <mark class="important">Images.find()</mark>; // Where Images is an FS.Collection instance
+  }
+});</code>
+        </pre><pre style="position: absolute; top: 370px; left: 50px;font-size: 24px; line-height: 35px;">
+            <code>&lt;template name="imageView">
+  &lt;div class="imageView">
+    {{#each images}}
+      &lt;div>
+        &lt;a href="<mark class="important">{{this.url}}></mark>" target="_blank">&lt;img src="<mark class="important">{{this.url store='thumbs' uploading='/images/uploading.gif'
+        storing='/images/storing.gif'}}></mark>" alt="" class="thumbnail" />&lt;/a>
+      &lt;/div>
+    {{/each}}
+  &lt;/div>
+&lt;/template></code>
+        </pre>
+        <p class="sticker next" style="position: absolute; top: 340px; left: 570px">Ne pas oublier de Pub / Sub</p>
+		<style>
+			#parametresGlobbing pre, #parametresGlobbing pre code {
+				font-size: 20px;
+                line-height: 26px;
+				}
+        </style>
+	</div></section>
+    
+	<section class="slide" id="parametresGlobbingNamed"><div>
+        <img src="pictures/morea.jpg" class="imgmorea">
+        <p class="imgmorea">Conception et infogérance d’infrastructures critiques</p>
+		<h2>Sécurité</h2>
+        <pre style="position: absolute; top: 210px; left: 100px;font-size: 24px; line-height: 35px;">
+            <code>Images.allow({
+  <mark class="important">download</mark>: function (userId, doc) {
+    ...
+  },
+  <mark class="important">insert</mark>: function (userId, doc) {
+    ...
+  },
+  <mark class="important">update</mark>: function (userId, doc, fieldNames, modifier) {
+    ...
+  },
+  <mark class="important">remove</mark>: function (userId, doc) {
+    ...
+  }
+});
+</code>
+        </pre>
+		<style>
+			#parametresGlobbingNamed pre, #parametresGlobbingNamed pre code {
+				font-size: 20px;
+                line-height: 26px;
+				}
+        </style>
+	</div></section>
+    <section class="slide" id="morea"><div>
+        <img src="pictures/morea.jpg">
+        <p class="moreapitch">Pour héberger vos applications Meteor critiques</p>
+        <p class="moreaprez"><a href="http://www.morea.fr" target="_blank">MOREA</a> vous accompagne dans le design, l'implémentation et l'exploitation de vos infrastructures et applications critiques. Combinez la richesse fonctionnelle des services Amazon Web Services à l'expertise et l'expérience de Morea sur plateformes critiques. Ils font confiance à Morea :</p>
+        <img src="pictures/morea_clients.jpg" style="height: 55%; margin-left:120px; margin-top: -50px">
+        <style>
+            #morea img {
+                margin-top: -60px;
+                margin-bottom: -75px;
+                margin-left: 0px
+            }
+            #morea .moreaprez {
+                font-size: 17px;
+                margin-top: -30px;
+                margin-left: 10px
+            }
+            #morea p.moreapitch {
+                font-size: 35px;
+                margin-top: -20px;
+                margin-left: 10px
+            }
+        </style>
+	</div></section>
+	<section class="slide cover" id="Picture"><div>
+		<h2>Merci !</h2>
+		<img src="pictures/slide14.jpg" alt="">
+        
+        <p class="sourceLinks">Thanks to Morea & AWS</p>
+		<style>
+			#Picture h2 {
+				color:#FFF;
+                position: absolute;
+                bottom: 185px;
+                right: 140px;
+            }
+            img.imgmorea {
+                position: absolute;
+                width: 180px;
+                bottom: 5px;
+                right: 20px
+            }
+            p.imgmorea {
+                position: absolute;
+                bottom: -50px;
+                right: 20px;
+                font-size: 20px;
+            }
+            .sourceLinks {
+                font-size: 20px;
+                color: white;
+                background-color: #000;
+                border-radius: 10px; 
+                -moz-border-radius: 10px; 
+                -webkit-border-radius: 10px;
+                border: 10px solid #000;
+                opacity: 0.55; 
+                position: absolute;
+                bottom: -30px;
+                right: 20px
+            }
+		</style>
+	</div></section>
+	<p class="badge"><a href="http://www.morea.fr"><strong>www.morea.fr</strong></a></p>
+	<!--
+		To hide progress bar from entire presentation
+		just remove “progress” element.
+		-->
+	<div class="progress"><div></div></div>
+	<script src="shower/shower.min.js"></script>
+	<!-- Copyright © 2013 Pascal Richier, Easy Paddock SAS. -->
+</body>
+</html>
